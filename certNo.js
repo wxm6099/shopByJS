@@ -4313,7 +4313,7 @@ const format = (num) => {
 }
 
 /**
- * @name 生成从minNum到maxNum的随机数
+ * @name 生成从min到max的随机数
  * @param {Number} min
  * @param {Number} max
  */
@@ -4324,7 +4324,7 @@ const randomNum = (min, max) => {
 /**
  * @name 获取随机身份证号码
  */
-export const getRandomID = () => {
+export const getRandomCertNO = () => {
   // 身份证号码共18位，由17位本体码和1位校验码组成。
   // 前1、2位数字表示：所在省份的代码；
   // 第3、4位数字表示：所在城市的代码；
@@ -4349,16 +4349,19 @@ export const check18CertNO = (sId) => {
   try {
     let iSum = 0
     if (!/^\d{17}(\d|x)$/i.test(sId)) {
-      return '请输入正确的身份证号码1'
+      console.log('请输入正确的身份证号码');
+      return false
     }
     sId = sId.replace(/x$/i, 'a')
     if (aCity[parseInt(sId.substr(0, 2))] == null) {
-      return '请输入正确的身份证号码2'
+      console.log('请输入正确的身份证号码');
+      return false
     }
     let sBirthday = sId.substr(6, 4) + '-' + Number(sId.substr(10, 2)) + '-' + Number(sId.substr(12, 2))
     let d = new Date(sBirthday.replace(/-/g, '/'))
     if (sBirthday !== d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()) {
-      return '请输入正确的身份证号码3'
+      console.log('请输入正确的身份证号码');
+      return false
     }
     // let nowdate = new Date()
     // if (nowdate.getFullYear() - d.getFullYear() < 18) {
@@ -4376,15 +4379,18 @@ export const check18CertNO = (sId) => {
       iSum += (Math.pow(2, i) % 11) * parseInt(sId.charAt(17 - i), 11)
     }
     if (iSum % 11 !== 1) {
-      return '请输入正确的身份证号码4'
+      console.log('请输入正确的身份证号码');
+      return false
     }
-    return '检测通过'
+    console.log('检测通过');
+    return true
   } catch (e) {
-    return '请输入正确的身份证号码5'
+    console.log('请输入正确的身份证号码');
+      return false
   }
 }
 
 export default {
-  getRandomID,
+  getRandomCertNO,
   check18CertNO
 }
